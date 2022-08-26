@@ -4,6 +4,8 @@ import type { AppRouter } from "../server/router";
 import type { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
 import "../styles/globals.css";
+import { loggerLink} from '@trpc/client/links/loggerLink';
+import { httpBatchLink } from '@trpc/client/links/httpBatchLink';
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return <Component {...pageProps} />;
@@ -16,20 +18,36 @@ const getBaseUrl = () => {
 };
 
 export default withTRPC<AppRouter>({
-  config() {
+  config({ctx}) {
     /**
      * If you want to use SSR, you need to use the server's full URL
      * @link https://trpc.io/docs/ssr
      */
     const url = `${getBaseUrl()}/api/trpc`;
+    const links = [
+      loggerLink(),
+      httpBatchLink({
+        maxBatchSize: 10,
+        url
+      })
+    ]
 
     return {
-      url,
+      links,
       transformer: superjson,
       /**
        * @link https://react-query.tanstack.com/reference/QueryClient
        */
-      // queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
+      queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
+      headers() {
+        if (ctx?.req) {
+          return {
+            ...ctx.req.headers,
+            'x-ssr': '1',
+          }
+        }
+        return {}
+      },
     };
   },
   /**
