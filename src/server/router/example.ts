@@ -19,5 +19,3 @@ export const exampleRouter = createRouter()
       return await ctx.prisma.example.findMany();
     },
   });
-
-

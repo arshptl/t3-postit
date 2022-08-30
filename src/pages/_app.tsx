@@ -4,8 +4,8 @@ import type { AppRouter } from "../server/router";
 import type { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
 import "../styles/globals.css";
-import { loggerLink} from '@trpc/client/links/loggerLink';
-import { httpBatchLink } from '@trpc/client/links/httpBatchLink';
+import { loggerLink } from "@trpc/client/links/loggerLink";
+import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return <Component {...pageProps} />;
@@ -18,7 +18,7 @@ const getBaseUrl = () => {
 };
 
 export default withTRPC<AppRouter>({
-  config({ctx}) {
+  config({ ctx }) {
     /**
      * If you want to use SSR, you need to use the server's full URL
      * @link https://trpc.io/docs/ssr
@@ -28,9 +28,9 @@ export default withTRPC<AppRouter>({
       loggerLink(),
       httpBatchLink({
         maxBatchSize: 10,
-        url
-      })
-    ]
+        url,
+      }),
+    ];
 
     return {
       links,
@@ -43,10 +43,10 @@ export default withTRPC<AppRouter>({
         if (ctx?.req) {
           return {
             ...ctx.req.headers,
-            'x-ssr': '1',
-          }
+            "x-ssr": "1",
+          };
         }
-        return {}
+        return {};
       },
     };
   },
