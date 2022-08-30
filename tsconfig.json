@@ -47,7 +47,8 @@
     "next-auth.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "**/*.js"
+    "**/*.js",
+    ".eslintrc.js"
   ],
   "exclude": ["node_modules"]
 }
