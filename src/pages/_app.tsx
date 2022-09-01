@@ -6,6 +6,7 @@ import superjson from "superjson";
 import "../styles/globals.css";
 import { loggerLink } from "@trpc/client/links/loggerLink";
 import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
+import { baseUrl } from "@/constants";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return <Component {...pageProps} />;
@@ -13,8 +14,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
-  return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
+  return baseUrl;
+  // if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
+  // return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
 
 export default withTRPC<AppRouter>({

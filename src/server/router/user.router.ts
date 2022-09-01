@@ -1,4 +1,7 @@
+import { baseUrl } from "@/constants";
 import { createUserSchema, requestOtpSchema } from "@/schema/user.schema";
+import { encode } from "@/utils/base64";
+import { sendEmail } from "@/utils/mailer";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import * as trpc from "@trpc/server";
 import { createRouter } from "./context";
@@ -43,6 +46,7 @@ export const userRouter = createRouter()
           email,
         },
       });
+
       if (!user) {
         throw new trpc.TRPCError({
           code: "NOT_FOUND",
@@ -62,5 +66,13 @@ export const userRouter = createRouter()
       });
 
       // send mail to user
+      sendEmail({
+        token: encode(`${token.id}:{user.email}`),
+        url: baseUrl,
+        email: user.email,
+      });
     },
+  })
+  .query("verify-otp", {
+    async resolve() {},
   });
