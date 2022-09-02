@@ -10,6 +10,7 @@ const RegisterPage = () => {
   const [success, setSuccess] = useState(false);
   const [inputError, setInputError] = useState(false);
   const { handleSubmit, register } = useForm<createUserInput>();
+
   const { mutate, error } = trpc.useMutation(["users.request-otp"], {
     onSuccess: () => {
       setSuccess(true);

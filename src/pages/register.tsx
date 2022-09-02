@@ -8,6 +8,7 @@ import Router, { useRouter } from "next/router";
 const RegisterPage = () => {
   const router = useRouter();
   const { handleSubmit, register } = useForm<createUserInput>();
+
   const { mutate, error } = trpc.useMutation(["users.register-user"], {
     onSuccess: () => {
       router.push("/login");

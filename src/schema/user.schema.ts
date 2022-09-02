@@ -20,3 +20,7 @@ export const requestOtpSchema = z.object({
 
 //TYPE
 export type requestOtpInput = z.TypeOf<typeof requestOtpSchema>;
+
+export const verifyOtpSchema = z.object({
+  hash: z.string(),
+});
