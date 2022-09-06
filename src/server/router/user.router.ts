@@ -9,13 +9,15 @@ import { signJwt } from "@/utils/jwt";
 import { sendEmail } from "@/utils/mailer";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import * as trpc from "@trpc/server";
+import { serialize } from "cookie";
 import { createRouter } from "./context";
 
 export const userRouter = createRouter()
   .mutation("register-user", {
     input: createUserSchema,
     async resolve({ ctx, input }) {
-      const { name, email } = input;
+      const { email, name } = input;
+
       try {
         const user = await ctx.prisma.user.create({
           data: {
@@ -23,6 +25,7 @@ export const userRouter = createRouter()
             name,
           },
         });
+
         return user;
       } catch (e) {
         if (e instanceof PrismaClientKnownRequestError) {
@@ -69,20 +72,20 @@ export const userRouter = createRouter()
           },
         },
       });
-
-      // send mail to user
+      // send email to user
       sendEmail({
-        token: encode(`${token.id}:{user.email}`),
+        token: encode(`${token.id}:${user.email}`),
         url: baseUrl,
         email: user.email,
       });
+
+      return true;
     },
   })
   .query("verify-otp", {
     input: verifyOtpSchema,
-    async resolve({ ctx, input }) {
-      const { hash } = input;
-      const decoded = decode(hash).split(":");
+    async resolve({ input, ctx }) {
+      const decoded = decode(input.hash).split(":");
 
       const [id, email] = decoded;
 
@@ -109,5 +112,16 @@ export const userRouter = createRouter()
         email: token.user.email,
         id: token.user.id,
       });
+
+      ctx.res.setHeader("Set-Cookie", serialize("token", jwt, { path: "/" }));
+
+      return {
+        redirect: token.redirect,
+      };
+    },
+  })
+  .query("me", {
+    resolve({ ctx }) {
+      return ctx.user;
     },
   });
