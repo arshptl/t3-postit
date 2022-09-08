@@ -7,9 +7,23 @@ import "../styles/globals.css";
 import { loggerLink } from "@trpc/client/links/loggerLink";
 import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
 import { baseUrl } from "@/constants";
+import { trpc } from "@/utils/trpc";
+import { UserContextProvider } from "@/context/user.context";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-  return <Component {...pageProps} />;
+  const { data, error, isLoading } = trpc.useQuery(["users.me"]);
+
+  if (isLoading) {
+    <p>Loading...</p>;
+  }
+
+  return (
+    <UserContextProvider value={data}>
+      <main>
+        <Component {...pageProps} />
+      </main>
+    </UserContextProvider>
+  );
 };
 
 const getBaseUrl = () => {
@@ -40,7 +54,9 @@ export default withTRPC<AppRouter>({
       /**
        * @link https://react-query.tanstack.com/reference/QueryClient
        */
-      queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
+      queryClientConfig: {
+        defaultOptions: { queries: { staleTime: 60 } },
+      },
       headers() {
         if (ctx?.req) {
           return {
