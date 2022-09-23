@@ -23,3 +23,15 @@ function PostListingPage() {
 }
 
 export default PostListingPage;
+
+// export async function getStaticProps() {
+//   // console.log(data);
+//   const { data, isLoading } = trpc?.useQuery(["posts.posts"]);
+//   console.log(data);
+
+//   return {
+//     props: {
+//       posts: {},
+//     },
+//   };
+// }

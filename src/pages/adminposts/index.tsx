@@ -1,26 +1,13 @@
-import React from "react";
-import type { NextPage } from "next";
-import Head from "next/head";
-import { trpc } from "@/utils/trpc";
-import { useUserContext } from "@/context/user.context";
-import LoginForm from "@/components/LoginForm";
 import Link from "next/link";
+import { NextPage } from "next";
 import { buildPath, fileData } from "helpers/readWriteFiles";
 import { admin_post_schema } from "helpers/types/postTypes";
 
-const Home: NextPage<admin_post_schema> = (props) => {
+const AdminPostsPage = (props: admin_post_schema) => {
   const { post } = props;
-  const user = useUserContext();
-
-  if (!user) {
-    return <LoginForm />;
-  }
 
   return (
     <>
-      <div>Welcome back {user.email}!</div>
-      <Link href="/posts/new">Create Post</Link>
-      <h1>Posts</h1>
       <div>
         {post?.map((post: any) => {
           return (
@@ -35,7 +22,7 @@ const Home: NextPage<admin_post_schema> = (props) => {
   );
 };
 
-export default Home;
+export default AdminPostsPage;
 
 export async function getStaticProps() {
   const path = buildPath("adminPost.json");
