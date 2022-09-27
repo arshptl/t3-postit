@@ -1,7 +1,18 @@
 import Link from "next/link";
 import { trpc } from "../../utils/trpc";
+// import { createSSGHelpers } from '@trpc/react/ssg';
+// import {
+//   GetStaticPaths,
+//   GetStaticPropsContext,
+//   InferGetStaticPropsType,
+// } from 'next';
+// import { appRouter } from "@/server/router";
+// import { createContext } from "@/server/router/context";
+// import superjson from 'superjson';
+
 
 function PostListingPage() {
+  
   const { data, isLoading } = trpc.useQuery(["posts.posts"]);
 
   if (isLoading) {
@@ -24,14 +35,26 @@ function PostListingPage() {
 
 export default PostListingPage;
 
-// export async function getStaticProps() {
-//   // console.log(data);
-//   const { data, isLoading } = trpc?.useQuery(["posts.posts"]);
-//   console.log(data);
+// const fetchAllPosts = () => {
+  // const { data, isLoading } = trpc.useQuery(["posts.posts"]);
+  // return data;
+// }
 
+// export async function getStaticProps(context: GetStaticPropsContext<{ id: string }>,) {
+//   // const { data, isLoading } = trpc?.useQuery(["posts.posts"]);
+//   const ssg = await createSSGHelpers({
+//     router: appRouter,
+//     ctx: await createContext(),
+//     transformer: superjson, // optional - adds superjson serialization
+//   });
+
+//   await ssg.fetchQuery("posts.posts");
+
+//   // console.log(fetchAllPosts());
+  
 //   return {
 //     props: {
-//       posts: {},
+//       posts: ssg.dehydrate(),
 //     },
 //   };
 // }

@@ -5,7 +5,6 @@ import { single_admin_post_schema } from "helpers/types/postTypes";
 
 const SingleAdminPost = (props: single_admin_post_schema) => {
   const { post } = props;
-  console.log(post);
 
   return (
     <>

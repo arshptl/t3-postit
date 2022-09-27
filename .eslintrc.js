@@ -14,7 +14,7 @@ module.exports = {
   },
   plugins: ["react", "@typescript-eslint"],
   rules: {
-    "no-console": "on",
+    "no-console": "warn",
   },
   settings: {
     react: {
