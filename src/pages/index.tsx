@@ -31,6 +31,7 @@ const Home: NextPage<admin_post_schema> = (props) => {
           );
         })}
       </div>
+      <Link href="/adminposts">See all posts</Link>
     </>
   );
 };

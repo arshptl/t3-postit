@@ -1,15 +1,5 @@
 import Link from "next/link";
 import { trpc } from "../../utils/trpc";
-// import { createSSGHelpers } from '@trpc/react/ssg';
-// import {
-//   GetStaticPaths,
-//   GetStaticPropsContext,
-//   InferGetStaticPropsType,
-// } from 'next';
-// import { appRouter } from "@/server/router";
-// import { createContext } from "@/server/router/context";
-// import superjson from 'superjson';
-
 
 function PostListingPage() {
   
@@ -21,6 +11,7 @@ function PostListingPage() {
 
   return (
     <div>
+      <h1>Posts</h1>
       {data?.map((post) => {
         return (
           <article key={post.id}>
@@ -35,6 +26,19 @@ function PostListingPage() {
 
 export default PostListingPage;
 
+
+// import { createSSGHelpers } from '@trpc/react/ssg';
+// import {
+//   GetStaticPaths,
+//   GetStaticPropsContext,
+//   InferGetStaticPropsType,
+// } from 'next';
+// import { appRouter } from "@/server/router";
+// import { createContext } from "@/server/router/context";
+// import superjson from 'superjson';
+
+
+// TRPC at the server side
 // const fetchAllPosts = () => {
   // const { data, isLoading } = trpc.useQuery(["posts.posts"]);
   // return data;

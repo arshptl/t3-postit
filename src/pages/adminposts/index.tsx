@@ -8,6 +8,7 @@ const AdminPostsPage = (props: admin_post_schema) => {
 
   return (
     <>
+      <h1>All admin posts</h1>
       <div>
         {post?.map((post: any) => {
           return (
